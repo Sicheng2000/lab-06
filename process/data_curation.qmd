@@ -12,9 +12,9 @@ bibliography: ["../bibliography.bib", "../packages.bib"]
 
 library(dplyr)        # Inspecting and sub-setting data
 library(knitr)        # Creating a table
-library(readtext)     # Reading text content
+library(readtext)     # Reading text contents
 library(readr)        # Reading and writing data
-library(qtalrkit)     # Creating data dictionary
+library(qtalrkit)     # Creating data dictionaries
 library(fs)           # Allowing assigning or getting a path to a directory
 ```
 
@@ -30,7 +30,7 @@ file_url <- "https://github.com/francojc/activ-es/raw/master/activ-es-v.02/corpu
 # Assigning the directory path to dir_location
 dir_location <- "../data/original/actives"
 
-# Downloading the data from the link in file_url, decompressing the data to store it in the path mentioned in dir_location and the user need to confirme that they have permission to use the data
+# Downloading the data from the link in file_url, decompressing the data to store it in the path mentioned in dir_location and the user need to confirm that they have permission to use the data
 get_compressed_data(
   url = file_url,
   target_dir = dir_location,
@@ -46,14 +46,14 @@ get_compressed_data(
 
 -->
 
-From the corpus README, the chosen corpus contain the film dialogue from Argentine, Mexican and Spanish productions. The corpus contains the plain text, annotated text, running text with EAGLES tagset and wordlist file which seems can be used to compare Spanish from Argentina, Mexico, and Spain.
+From the corpus README, the chosen corpus contain the film dialogue from Argentine, Mexican and Spanish productions. The corpus contains the plain text, annotated text, running text with EAGLES tagset and wordlist file which seems can be used to compare Spanish from Argentina, Mexico, and Spain. Knowing how data stored or structured helps us to find the specific data we want or store the data we later derived in the correct directory.
 
 ```{r}
 #| label: dir-tree
 #| echo: false
 
 # Create a tree of the decompressed data structure
-dir_tree(path = "../data/original/actives", recurse = 3) # only show the first three levels
+dir_tree(path = "../data", recurse = 2) # only show the first two levels
 ```
 
 ### Description
@@ -94,16 +94,19 @@ read_csv("../data/original/actives_do.csv") |>
 -->
 
 *       In `activ-es-v.02/corpus/`, it contains plain text, annotated files and EAGLES tagged files. The title shows the language code, country, year, title, type, genre and IMDb ID. Other variables like word, observed relative frequency and observed relative dispersion. The language code shows the spanish is from Argentina, Mexico, or Spain. The country shows where the texts in publishes come from. The year is when the publishes show up. The title is the name of publishes. The type is what kind of publishes they are. The genre shows the category of the publishes. IMDb ID is the number of the publishes' title. Word is a specific word, observed relative frequency is word occurrence per 100,000 and observed relative dispersion is occurrence of a word per 10 documents.
-*    The aimed tabular format would contains 8 coloumns:  
-language code, year, title, genre, IMDb ID, word, observed relative frequency and observed relative dispersion. I exclude country and type for the language code would reveal the country and type is movie. However if considering combining with other data, these two variables should be included.
+*    The aimed tabular format would contains 7 coloumns: language code, year, title, type, genre, and IMDb ID.
 
 ## Curate
 
 <!-- Overview of the data curation process -->
 
+The data curation process involves three main steps: orientation, data tidying, and, in the case of semi-structured or structured data, preparation for computer reading. Before curation, it is essential to identify and obtain the corpus or dataset of interest, which may involve downloading and decompressing data. During the orientation stage, it is important to thoroughly review the data's origin information and assess its structure. When tidying the data, it is essential to have an idealized structure in mind while aiming to maintain the original data structure as much as possible. This process aids easy data access and interpretation. The specific steps involved in tidying the data may vary depending on the research purposes. However, the primary objective is to enhance the data's informativeness by removing redundant variables and potentially renaming variables to improve clarity.
+
 ### Read
 
 <!-- Description ... -->
+
+Given that the files' titles contain information about the variables, it is more efficient to read the filenames in this case.
 
 ```{r}
 #| label: read-data-actives
@@ -132,6 +135,8 @@ actives_tbl
 
 <!-- Description ... -->
 
+This step aims to ensure data clarity for future analysis. Despite the presence of the `imdbid` variable, the dataset lacks unique identifiers for individual rows. Therefore, we introduce the `doc_id` variable to provide each row with a distinct identity within the dataset.
+
 ```{r}
 #| label: tidy-data-actives
 
@@ -150,6 +155,8 @@ actives_tbl
 
 <!-- Description ... -->
 
+The curated data can be saved in the `.csv` format, which is commonly used. It is essential to preserve the original data. Therefore, the curated data should be stored separately in the directory like `../data/derived/`, ensuring that the original data remains unaltered.
+
 ```{r}
 #| label: write-data-actives
 
@@ -164,9 +171,15 @@ write_csv(
 
 <!-- Overview of the purpose and structure of the documentation -->
 
+*    In order to enhance the reproducibility of the project, it is crucial to document the data curation process. This involves adding comments within code blocks and providing a description of the process. Not only does this aid researchers in recalling the process and identifying mistakes, but it also enables other individuals who may utilize or reference the research to understand, verify, or gain insights from the project.
+
+*    The documentation process includes writing descriptive prose, adding code comments, and creating a data dictionary detailing dataset variables and their values.
+
 ### Data dictionary
 
 <!-- Description ... -->
+
+The data dictionary provides details about the data's variables and their values. It can be generated manually, programmatically, or even with the assistance of AI. In this instance, we opt to programmatically create the data dictionary.
 
 ```{r}
 #| label: create-data-dictionary
@@ -187,7 +200,6 @@ You will need to open and edit the `actives_curated_dd.csv` file to add the desc
 
 -->
 
-
 ```{r}
 #| label: tbl-data-dictionary-show
 #| tbl-cap: "Data dictionary: Actives corpus"
@@ -198,10 +210,11 @@ read_csv("../data/derived/actives_curated_dd.csv") |>
   kable() # read the csv file into the table format
 ```
 
-
 ### Project structure
 
 <!-- Description ... -->
+
+The derived data is stored in `../data/derived`, while the curation process is documented in `../process`.
 
 ```{r}
 #| label: show-directory-structure
@@ -215,7 +228,7 @@ dir_tree("../", recurse = 2) # only show the first two levels
 
 <!-- Complete the self-assessment -->
 
-
+Please see `Issues` on Github under this repository.
 
 <!-- Review the .gitignore file to make sure that the data and datasets are not tracked by Git -->
 

@@ -1,0 +1,10 @@
+variable,name,variable_type,description
+doc_id,document id,integer,the number of file
+text,text,character,text in publishes' transcripts
+lang,language code,character,describing which countries' Spanish
+country,country,character,where publishes come from
+year,year,integer, when the publishes show up
+title,title,character,the name of publishes
+type,type,character,what kind of publishes they are
+genre,genre,character,first genre listed in the IMD
+imdbid,IMDb ID,integer,the number of the publishes' title in IMDb
