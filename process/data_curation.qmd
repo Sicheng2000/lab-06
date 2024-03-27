@@ -22,7 +22,6 @@ library(fs)           # Allowing assigning or getting a path to a directory
 #| label: acquire-data
 #| message: false
 #| echo: false
-#| eval: false
 
 # Assigning the link with data to file_url
 file_url <- "https://github.com/francojc/activ-es/raw/master/activ-es-v.02/corpus/plain.zip"
@@ -140,7 +139,7 @@ This step aims to ensure data clarity for future analysis. Despite the presence 
 ```{r}
 #| label: tidy-data-actives
 
-# add column information 
+# add column information
 actives_tbl <-
   actives_tbl |>
   mutate(
